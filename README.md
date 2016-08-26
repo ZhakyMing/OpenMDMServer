@@ -1,7 +1,9 @@
 基于Java（SpringMVC＋Hibernate ＋MySQL）的iOS移动设备管理（MDM）。
 
 一、OpenMDMServer代码实现了如下功能：
+
 1、自动创建基于设备的mobileconfig描述文件，安装时执行CheckIn和ServerURL自动设备注册；
+
 2、获取设备信息；
 3、获取设备APP信息；
 4、安装和卸载APP；
