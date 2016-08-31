@@ -1,31 +1,24 @@
 package com.jiangge.controller;
 
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.jiangge.pojo.DeviceTemp;
 import com.jiangge.pojo.User;
-import com.jiangge.service.AdminService;
-import com.jiangge.service.CommandService;
-import com.jiangge.service.DeviceService;
-import com.jiangge.service.DeviceTempService;
-import com.jiangge.service.UserService;
+import com.jiangge.service.*;
 import com.jiangge.utils.ConfigUtils;
 import com.jiangge.utils.EmailUtil;
 import com.jiangge.utils.MDMTaskUtils;
 import com.jiangge.utils.StringUtil;
 import com.jiangge.vo.AdminVO;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @SuppressWarnings("all")
 @Controller
@@ -57,9 +50,9 @@ public class UserController {
         		String id = UUID.randomUUID().toString().replace("-", "");
         		/**发送邮件**/
         		String content = "用户 " + email+" 您好：<br/><br/>描述文件下载地址："
-        				+ "<a href='http://mdm.mbaike.net/user/download.do?uid="+id+"' target='_blank'>http://mdm.mbaike.net/user/download.do?uid="+id+"</a><br/>"
-        				+ "描述文件二维码地址：<br/><img src='http://qr.topscan.com/api.php?el=l&w=200&m=10&text=http://mdm.mbaike.net/user/download.do?uid="+id+"'/><br/>"
-        				+ "平台登录地址：<a href='http://mdm.mbaike.net/sysadmin/login.jsp' target='_blank'>http://mdm.mbaike.net</a>，登录账号是：" + email + "，登录密码是：" + id + "</br>"
+        				+ "<a href='http://etest.hulai.com/OpenMdmServer/user/download.do?uid="+id+"' target='_blank'>http://etest.hulai.com/OpenMdmServer/user/download.do?uid="+id+"</a><br/>"
+        				+ "描述文件二维码地址：<br/><img src='http://qr.topscan.com/api.php?el=l&w=200&m=10&text=http://etest.hulai.com/OpenMdmServer/user/download.do?uid="+id+"'/><br/>"
+        				+ "平台登录地址：<a href='http://etest.hulai.com/OpenMdmServer/sysadmin/login.jsp' target='_blank'>http://etest.hulai.com/OpenMdmServer</a>，登录账号是：" + email + "，登录密码是：" + id + "</br>"
         				+ "<br/>感谢支持！http://www.mbaike.net/";
         		boolean sendOK = EmailUtil.send("MDM测试激活邮件",email,content);
         		if(sendOK){
@@ -74,7 +67,7 @@ public class UserController {
                     map.put("msg", "邮箱激活成功，请登录邮箱查收激活信息！");
         		}else{
         			map.put("state", "0");
-                    map.put("msg", "激活失败，请联系管理员：459104018@qq.com!");
+                    map.put("msg", "激活失败，请联系管理员：XXXXXX@qq.com!");
         		}
         	}
         }else{
@@ -86,7 +79,7 @@ public class UserController {
 	
 	 /**
      * 下载设备控制描述文件功能
-     * @throws Exception
+     * @throws Except
      */
     
     @RequestMapping("/download")

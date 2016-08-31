@@ -68,7 +68,7 @@
 			<key>AccessRights</key>
 			<integer>8191</integer>
 			<key>CheckInURL</key>
-			<string>https://mdm.mbaike.net/mdm/checkin.do?deviceId=#deviceId#</string>
+			<string>https://etest.hulai.com/OpenMdmServer/mdm/checkin.do?deviceId=#deviceId#</string>
 			<key>CheckOutWhenRemoved</key>
 			<true/>
 			<key>IdentityCertificateUUID</key>
@@ -88,7 +88,7 @@
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 			<key>ServerURL</key>
-			<string>https://mdm.mbaike.net/mdm/server.do?deviceId=#deviceId#</string>
+			<string>https://etest.hulai.com/OpenMdmServer/mdm/server.do?deviceId=#deviceId#</string>
 			<key>SignMessage</key>
 			<true/>
 			<key>Topic</key>

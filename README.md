@@ -77,7 +77,7 @@ MDM能够做些什么？
 
 三、演示站及技术支持：
 
-1、演示站：http://mdm.mbaike.net/ 注意：请用邮箱注册并生成账号和mobileconfig描述文件
+1、演示站：http://etest.hulai.com/OpenMdmServer/ 注意：请用邮箱注册并生成账号和mobileconfig描述文件
 
 2、GitHub开源地址：https://github.com/keaijohnee/OpenMDMServer
 
