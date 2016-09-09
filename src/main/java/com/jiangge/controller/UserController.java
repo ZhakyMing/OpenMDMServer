@@ -30,53 +30,82 @@ public class UserController {
 	private DeviceTempService deviceTempService;
 	private UserService userService;
 	private AdminService adminService;
-	
-	/**
+    /**
      * 邮箱注册
+     *
      * @throws Exception
      */
-	@ResponseBody
+    @ResponseBody
     @RequestMapping("/register")
-    public Map<String, String> getCode(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        Map<String, String> map  = new HashMap<String, String>();
-        String email = request.getParameter("email")==null?"":request.getParameter("email").trim();
-        boolean ismobile = StringUtil.isEmail(email);
-        if(ismobile){
-        	User user = userService.getUserByHql("from User where email = ?", email);
-        	if(null != user){
-        		map.put("state", "0");
+    public Map<String, String> register(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, String> map = new HashMap<String, String>();
+        String email = request.getParameter("email") == null ? "" : request.getParameter("email").trim();
+        boolean isEmail = StringUtil.isEmail(email);
+        if (isEmail) {
+            User user = userService.getUserByHql("from User where email = ?", email);
+            if (null != user) {
+                map.put("state", "0");
                 map.put("msg", "该邮箱已经激活过了，请到邮箱中查收登录邮件！");
-        	}else{
-        		String id = UUID.randomUUID().toString().replace("-", "");
-        		/**发送邮件**/
-        		String content = "用户 " + email+" 您好：<br/><br/>描述文件下载地址："
-        				+ "<a href='http://etest.hulai.com/OpenMdmServer/user/download.do?uid="+id+"' target='_blank'>http://etest.hulai.com/OpenMdmServer/user/download.do?uid="+id+"</a><br/>"
-        				+ "描述文件二维码地址：<br/><img src='http://qr.topscan.com/api.php?el=l&w=200&m=10&text=http://etest.hulai.com/OpenMdmServer/user/download.do?uid="+id+"'/><br/>"
-        				+ "平台登录地址：<a href='http://etest.hulai.com/OpenMdmServer/sysadmin/login.jsp' target='_blank'>http://etest.hulai.com/OpenMdmServer</a>，登录账号是：" + email + "，登录密码是：" + id + "</br>"
-        				+ "<br/>感谢支持！http://www.mbaike.net/";
-        		boolean sendOK = EmailUtil.send("MDM测试激活邮件",email,content);
-        		if(sendOK){
-        			/**保存数据**/
-            		user = new User();
-            		user.setEmail(email);
-            		user.setId(id);;
-            		String password = StringUtil.MD5(id);
-            		user.setPassword(password);
-            		userService.saveOrUpdtae(user);
-        			map.put("state", "1");
+            } else {
+                String id = UUID.randomUUID().toString().replace("-", "");
+                /**发送邮件**/
+                String serverUrl = "https://sync.hoolai.com/mdm";
+                StringBuffer sb = new StringBuffer();
+                sb.append("用户 ");
+                sb.append(email);
+                sb.append(" 您好：<br/><br/>描述文件下载地址：");
+                sb.append("<a href='");
+                sb.append(serverUrl);
+                sb.append("/user/download.do?uid=");
+                sb.append(id);
+                sb.append("' target='_blank'>");
+                sb.append(serverUrl);
+                sb.append("/user/download.do?uid=");
+                sb.append(id);
+                sb.append("</a><br/>");
+                sb.append("描述文件二维码地址：<br/><img src='http://qr.topscan.com/api.php?el=l&w=200&m=10&text=");
+                sb.append(serverUrl);
+                sb.append("/user/download.do?uid=");
+                sb.append(id);
+                sb.append("'/><br/>平台登录地址：<a href='");
+                sb.append(serverUrl);
+                sb.append("/sysadmin/login.jsp' target='_blank'>");
+                sb.append(serverUrl);
+                sb.append("/</a>，登录账号是：");
+                sb.append(email);
+                sb.append("，登录密码是：");
+                sb.append(id);
+                sb.append("</br>");
+//                String content = "用户 " + email + " 您好：<br/><br/>描述文件下载地址："
+//                        + "<a href='https://sync.hoolai.com/mdm/user/download.do?uid=" + id + "' target='_blank'>https://sync.hoolai.com/mdm/user/download.do?uid=" + id + "</a><br/>"
+//                        + "描述文件二维码地址：<br/><img src='http://qr.topscan.com/api.php?el=l&w=200&m=10&text=https://sync.hoolai.com/mdm/user/download.do?uid=" + id + "'/><br/>"
+//                        + "平台登录地址：<a href='https://sync.hoolai.com/mdm/sysadmin/login.jsp' target='_blank'>https://sync.hoolai.com/mdm/</a>，登录账号是：" + email + "，登录密码是：" + id + "</br>"
+//                        + "<br/>感谢支持！http://www.mbaike.net/";
+                String content=sb.toString();
+                boolean sendOK = EmailUtil.send("MDM测试激活邮件", email, content);
+                if (sendOK) {
+                    /**保存数据**/
+                    /** 默认邮箱注册邮箱就激活成功,无需点击二次验证激活**/
+                    user = new User();
+                    user.setEmail(email);
+                    user.setId(id);
+                    ;
+                    String password = StringUtil.MD5(id);
+                    user.setPassword(password);
+                    userService.saveOrUpdtae(user);
+                    map.put("state", "1");
                     map.put("msg", "邮箱激活成功，请登录邮箱查收激活信息！");
-        		}else{
-        			map.put("state", "0");
+                } else {
+                    map.put("state", "0");
                     map.put("msg", "激活失败，请联系管理员：XXXXXX@qq.com!");
-        		}
-        	}
-        }else{
-        	 map.put("state", "0");
-             map.put("msg", "邮箱不合法，请重新输入邮箱地址!");
+                }
+            }
+        } else {
+            map.put("state", "0");
+            map.put("msg", "邮箱不合法，请重新输入邮箱地址!");
         }
         return map;
     }
-	
 	 /**
      * 下载设备控制描述文件功能
      * @throws Except

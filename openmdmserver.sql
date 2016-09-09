@@ -1,9 +1,9 @@
 
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin` (
-  `id` varchar(255) COLLATE utf8_bin NOT NULL,
+  `id` varchar(255) COLLATE utf8_bin NOT NULL,/*随机生成的uuid,用作用户登录明文密码*/
   `account` varchar(50) COLLATE utf8_bin DEFAULT NULL,
-  `password` varchar(50) COLLATE utf8_bin DEFAULT NULL,
+  `password` varchar(50) COLLATE utf8_bin DEFAULT NULL,/*将上面的id用md5加密后的字符串*/
   `remark` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `role` varchar(10) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
